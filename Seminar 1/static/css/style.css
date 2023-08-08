@@ -1,10 +1,7 @@
-.sub-category {
-    padding-left: 30px;
+a {
+    text-decoration: none;
 }
 
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: white;
+.footer-border {
+    border-top: 1px solid var(--bs-primary);
 }
