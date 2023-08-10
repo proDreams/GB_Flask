@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     context = storage.index_tasks
 
-    return render_template("index.html", **context)
+    return render_template("index_seminar.html", **context)
 
 
 @app.route("/about/")
