@@ -10,9 +10,8 @@ async def sum_list(lst):
         res += i
 
 
-async def main(lst=None):
+async def main(sep_list):
     tasks = []
-    sep_list = [lst[i:i + 100_000] for i in range(0, 1_000_000, 100_000)]
 
     for sep in sep_list:
         aio_task = asyncio.ensure_future(sum_list(sep))
@@ -26,4 +25,3 @@ def task(lst=None):
     loop.run_until_complete(main(lst))
 
     return res, time.time() - start_time
-

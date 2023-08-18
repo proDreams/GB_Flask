@@ -10,11 +10,9 @@ def sum_list(lst):
         res += i
 
 
-def task(lst):
+def task(sep_list):
     threads = []
     start_time = time.time()
-
-    sep_list = [lst[i:i + 100_000] for i in range(0, 1_000_000, 100_000)]
 
     for sep in sep_list:
         thread = threading.Thread(target=sum_list, args=[sep])

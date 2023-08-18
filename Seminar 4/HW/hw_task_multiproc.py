@@ -10,11 +10,8 @@ def sum_list(lst):
     return res
 
 
-def task(lst):
-
+def task(sep_list):
     start_time = time.time()
-
-    sep_list = [lst[i:i + 100_000] for i in range(0, 1_000_000, 100_000)]
 
     pool = Pool(processes=10)
     result = pool.map(sum_list, sep_list)
