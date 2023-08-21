@@ -5,11 +5,12 @@ from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.templating import Jinja2Templates
+from fastapi.openapi.utils import get_openapi
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(openapi_url='/api/v1/openapi.json')
 templates = Jinja2Templates(directory='./Lecture_5/templates')
 
 
@@ -28,6 +29,24 @@ class Item(BaseModel):
 @app.get('/', response_class=HTMLResponse)
 async def read_root():
     return '<h1>Hello World</h1>'
+
+
+@app.get('/hello/{name}')
+async def read_item(name: str, age: int):
+    return {'Hello': name, 'Age': age}
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title='Custom Title',
+        version="1.0.0",
+        description="Custom schema",
+        routes=app.routes,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
 
 
 @app.get('/{name}', response_class=HTMLResponse)
