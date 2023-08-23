@@ -7,9 +7,10 @@
 # Реализуйте валидацию данных запроса и ответа.
 import pydantic
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Form
 from pydantic import BaseModel
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 
 app = FastAPI()
@@ -26,8 +27,13 @@ class User(BaseModel):
 
 
 @app.get('/')
-def index(request: Request):
+async def index(request: Request):
     return templates.TemplateResponse('users.html', {'request': request, 'users': users})
+
+
+@app.get('/form/')
+async def add_user_form(request: Request):
+    return templates.TemplateResponse('form.html', {'request': request})
 
 
 @app.get('/users/')
@@ -39,6 +45,12 @@ async def all_users():
 async def add_users(user: User):
     users.append(user)
     return {"user": user, "status": "added"}
+
+
+@app.post('/user/add')
+async def add_user(id_=Form(), name=Form(), email=Form(), password=Form()):
+    users.append(User(id_=id_, name=name, email=email, password=password))
+    return RedirectResponse('/', status_code=302)
 
 
 @app.put('/users/update/{user_id}')
